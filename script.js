@@ -1,5 +1,6 @@
-var orgNumber, guessedNumber, guessesRemaining;
-
+var orgNumber, guessedNumber, guessesRemaining, remaining, result;
+remaining = document.getElementById('remaining');
+result = document.getElementById('result');
 guessesRemaining = 10;
 function generateNumber() {
     orgNumber = Math.floor(Math.random() * 100) + 1;
@@ -8,27 +9,39 @@ function generateNumber() {
 function submitGuess() {
 
     guessesRemaining -= 1;
-    document.getElementById('remaining').innerHTML = "Tries Remaining: " + guessesRemaining;
+    remaining.innerHTML = "Tries Remaining: " + guessesRemaining;
 
     guessedNumber = parseInt(document.getElementById('guess').value);
 
     if (guessedNumber > orgNumber) {
-        document.getElementById('result').innerHTML = 'The number is Lower.';
+        result.innerHTML = 'The number is Lower.';
     } else if (guessedNumber < orgNumber) {
-        document.getElementById('result').innerHTML = 'The number is Higher.';
+        result.innerHTML = 'The number is Higher.';
     } else if (guessedNumber === orgNumber) {
-        document.getElementById('result').innerHTML = 'Congrats! You guessed the number correct!';
-        generateNumber();
+        result.innerHTML = 'Congrats! You guessed the number correct!';
+        setTimeout(function() {
+            generateNumber();
+            result.innerHTML = '<i>Result and Higher or lower will be shown here</i>';
+            guessesRemaining = 10;
+            remaining.innerHTML = 'Tries Remaining: ' + guessesRemaining;
+            document.getElementById('guess').value = '';
+        }, 5000);
+        return;
     }
 
     if (guessesRemaining <= 0){
-        document.getElementById('result').innerHTML = "Sorry! You failed in guessing the correct number in 10 tries.";
-        setTimeout(generateNumber, 5000);
-        guessesRemaining = 10;
-        document.getElementById('remaining').innerHTML = "Tries Remaining: " + guessesRemaining;
+        result.innerHTML = "Sorry! You failed in guessing the correct number in 10 tries.";
+        setTimeout(function() {
+            generateNumber();
+            result.innerHTML = '<i>Result and Higher or lower will be shown here</i>';
+            guessesRemaining = 10;
+            remaining.innerHTML = 'Tries Remaining: ' + guessesRemaining;
+            document.getElementById('guess').value = '';
+        }, 5000);
+        return;
     }
 }
 
 guessesRemaining = 10;
-document.getElementById('remaining').innerHTML = "Tries Remaining: " + guessesRemaining;
+remaining.innerHTML = "Tries Remaining: " + guessesRemaining;
 generateNumber();
